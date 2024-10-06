@@ -1,1 +1,61 @@
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class CurrencyConverter {
+    private static final Map<String, Double> currencyRates = new HashMap<>();
+
+    static {
+        // Add currency rates (1 USD = ?)
+        currencyRates.put("USD", 1.0);
+        currencyRates.put("EUR", 0.88);
+        currencyRates.put("GBP", 0.76);
+        currencyRates.put("INR", 74.83);
+        currencyRates.put("AUD", 1.48);
+        currencyRates.put("CAD", 1.31);
+        currencyRates.put("CNY", 6.95);
+        currencyRates.put("JPY", 109.97);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Available currencies:");
+        for (String currency : currencyRates.keySet()) {
+            System.out.println(currency);
+        }
+
+        System.out.print("Enter the source currency: ");
+        String sourceCurrency = scanner.next().toUpperCase();
+
+        System.out.print("Enter the target currency: ");
+        String targetCurrency = scanner.next().toUpperCase();
+
+        System.out.print("Enter the amount to convert: ");
+        double amount = scanner.nextDouble();
+
+        double convertedAmount = convertCurrency(amount, sourceCurrency, targetCurrency);
+
+        System.out.println(amount + " " + sourceCurrency + " = " + convertedAmount + " " + targetCurrency);
+    }
+
+    /**
+     * Converts the currency from one type to another.
+     *
+     * @param amount the amount to convert
+     * @param sourceCurrency the source currency
+     * @param targetCurrency the target currency
+     * @return the converted amount
+     */
+    public static double convertCurrency(double amount, String sourceCurrency, String targetCurrency) {
+        if (!currencyRates.containsKey(sourceCurrency) || !currencyRates.containsKey(targetCurrency)) {
+            throw new RuntimeException("Unsupported currency");
+        }
+
+        double sourceRate = currencyRates.get(sourceCurrency);
+        double targetRate = currencyRates.get(targetCurrency);
+
+        return amount * targetRate / sourceRate;
+    }
+}
